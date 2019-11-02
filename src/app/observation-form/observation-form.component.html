@@ -1,0 +1,36 @@
+<p>observation-form works!</p>
+
+<form [formGroup]="observationForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="standard">
+        <mat-label>Species name</mat-label>
+        <input matInput type="text" formControlName="speciesName" required>
+        <mat-error *ngIf="speciesName.errors?.required">
+            Name is required.
+        </mat-error>
+        <mat-error *ngIf="speciesName.errors?.minlength">
+            Name must be at least 3 characters long.
+        </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="standard">
+        <mat-label>Rarity</mat-label>
+        <mat-select formControlName="rarity" required>
+            <mat-option>--</mat-option>
+            <mat-option *ngFor="let r of rarities" [value]="r">
+                {{r.name}}
+            </mat-option>
+        </mat-select>
+        <mat-error *ngIf="rarity.errors?.required">
+            Rarity is required.
+        </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="standard">
+        <mat-label>Notes</mat-label>
+        <textarea matInput type="text" formControlName="notes"></textarea>
+    </mat-form-field>
+
+    <button mat-button type="submit" [disabled]="!observationForm.valid">Submit</button>
+
+</form>
+<button mat-button (click)="clearFields()">Clear all</button>

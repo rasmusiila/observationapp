@@ -1,0 +1,23 @@
+<p>observations works!</p>
+
+<a routerLink="/observation-form" routerLinkActive="active">New observation</a>
+
+<h2>Observations</h2>
+<table matSort (matSortChange)="sortData($event)" class="mat-elevation-z8">
+        <thead>
+        <tr>
+            <th mat-sort-header="speciesName">Species name</th>
+            <th mat-sort-header="rarity">Rarity</th>
+            <th mat-sort-header="notes" disabled>Notes</th>
+            <th mat-sort-header="date">Date</th>
+            <th mat-sort-header="time">Time</th>
+        </tr>
+        </thead>
+        <tr *ngFor="let observation of sortedData">
+            <td>{{observation.speciesName}}</td>
+            <td>{{observation.rarity.name}}</td>
+            <td>{{observation.notes | excerpt:30}}</td>
+            <td>{{observation.timestamp | date : "dd.MM.yyyy"}}</td>
+            <td>{{observation.timestamp | date : "HH:mm"}}</td>
+        </tr>
+</table>
