@@ -1,6 +1,16 @@
-<h1>{{title}}</h1>
-<nav>
-    <a routerLink="/observations" routerLinkActive="active">Observations</a>
-    <a routerLink="/observation-form" routerLinkActive="active">Add observations</a>
-</nav>
+<mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark indigo">
+    <mdb-navbar-brand><a class="navbar-brand" routerLink="/observations">{{title | titlecase}}</a></mdb-navbar-brand>
+    <links>
+        <div class="navbar-nav">
+            <a class="nav-item nav-link waves-light" routerLink="/observations" routerLinkActive="active"
+               mdbWavesEffect>Observations</a>
+            <a class="nav-item nav-link waves-light" routerLink="/observation-form" routerLinkActive="active"
+               mdbWavesEffect>Add observations</a>
+        </div>
+    </links>
+</mdb-navbar>
 <router-outlet></router-outlet>
+<footer class="page-footer font-small indigo fixed-bottom">
+    <div class="footer-copyright text-center py-3">© 2019 ObservationApp</div>
+</footer>
+

@@ -1,36 +1,38 @@
-<p>observation-form works!</p>
+<h2>Add a new observation</h2>
 
-<form [formGroup]="observationForm" (ngSubmit)="onSubmit()">
-    <mat-form-field appearance="standard">
-        <mat-label>Species name</mat-label>
-        <input matInput type="text" formControlName="speciesName" required>
-        <mat-error *ngIf="speciesName.errors?.required">
-            Name is required.
-        </mat-error>
-        <mat-error *ngIf="speciesName.errors?.minlength">
-            Name must be at least 3 characters long.
-        </mat-error>
-    </mat-form-field>
+<form [formGroup]="observationForm" (ngSubmit)="onSubmit()" class="text-center">
+    <div class="md-form">
+        <input type="text" id="observationFormSpeciesName" class="form-control" formControlName="speciesName" mdbInput
+               mdbValidate required>
+        <label for="observationFormSpeciesName">Species name</label>
+        <mdb-error *ngIf="speciesName.invalid && (speciesName.dirty || speciesName.touched)">
+            <span *ngIf="speciesName.errors.required">Name is required</span>
+            <span *ngIf="speciesName.errors.minlength">Name must be at least 3 characters long</span>
+        </mdb-error>
+    </div>
 
-    <mat-form-field appearance="standard">
-        <mat-label>Rarity</mat-label>
-        <mat-select formControlName="rarity" required>
-            <mat-option>--</mat-option>
-            <mat-option *ngFor="let r of rarities" [value]="r">
-                {{r.name}}
-            </mat-option>
-        </mat-select>
-        <mat-error *ngIf="rarity.errors?.required">
-            Rarity is required.
-        </mat-error>
-    </mat-form-field>
+    <div class="row">
+        <div class="col-md">
+            <select id="observationFormRarity" class="browser-default custom-select form-control"
+                    formControlName="rarity" mdbValidate required>
+                <option selected="selected" disabled>Choose rarity</option>
+                <option *ngFor="let r of rarities" [ngValue]="r">
+                    {{r.name}}
+                </option>
+            </select>
+            <label for="observationFormRarity">Rarity</label>
+            <mdb-error *ngIf="rarity.invalid && (rarity.dirty || rarity.touched)">
+                <span *ngIf="rarity.errors.required">Rarity is required</span>
+            </mdb-error>
+        </div>
+    </div>
 
-    <mat-form-field appearance="standard">
-        <mat-label>Notes</mat-label>
-        <textarea matInput type="text" formControlName="notes"></textarea>
-    </mat-form-field>
+    <div class="md-form">
+        <textarea id="observationFormNotes" class="form-control md-textarea" formControlName="notes" mdbInput></textarea>
+        <label for="observationFormNotes">Notes</label>
+    </div>
 
-    <button mat-button type="submit" [disabled]="!observationForm.valid">Submit</button>
+    <button type="submit" [disabled]="!observationForm.valid" mdbBtn color="indigo">Submit</button>
 
 </form>
-<button mat-button (click)="clearFields()">Clear all</button>
+<button type="button" (click)="clearFields()" mdbBtn color="red">Clear all</button>

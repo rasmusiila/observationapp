@@ -1,6 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Observation} from '../models/observation';
-import {MatSort, MatTableDataSource, Sort} from '@angular/material';
 import {compare, compareDates, compareTimes} from './utils/compare';
 import {ObservationService} from '../services/observation.service';
 import {RarityService} from '../services/rarity.service';
@@ -8,11 +7,19 @@ import {RarityService} from '../services/rarity.service';
 @Component({
     selector: 'app-observations',
     templateUrl: './observations.component.html',
-    styleUrls: ['./observations.component.css']
+    styleUrls: ['./observations.component.scss']
 })
 export class ObservationsComponent implements OnInit {
     observations: Observation[];
     sortedData: Observation[];
+
+    headElements = [
+        {name: 'speciesName', title: 'Species name', toggle: false},
+        {name: 'rarity', title: 'Rarity', toggle: false},
+        {name: 'date', title: 'Date', toggle: false},
+        {name: 'time', title: 'Time', toggle: false}
+    ];
+    sortingElement = '';
 
     constructor(private observationService: ObservationService, private rarityService: RarityService) {
         // this.sortedData = this.observations.slice();
@@ -35,16 +42,14 @@ export class ObservationsComponent implements OnInit {
         });
     }
 
-    sortData(sort: Sort) {
-        const data = this.observations.slice();
-        if (!sort.active || sort.direction === '') {
-            this.sortedData = data;
-            return;
-        }
+    sortData(head: any) {
+        head.toggle = !head.toggle;
+        this.sortingElement = head.name;
 
-        this.sortedData = data.sort((a, b) => {
-            const isAsc = sort.direction === 'asc';
-            switch (sort.active) {
+        // the sorting overwrites the previous sorting - this allows you to technically sort by multiple columns
+        this.sortedData.sort((a, b) => {
+            const isAsc = head.toggle;
+            switch (this.sortingElement) {
                 case 'speciesName':
                     return compare(a.speciesName, b.speciesName, isAsc);
                 case 'rarity':

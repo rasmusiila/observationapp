@@ -10,8 +10,8 @@ export class Observation implements Deserializable{
 
     deserialize(input: any): this {
         Object.assign(this, input);
-
         this.rarity = new Rarity().deserialize(input.rarity);
+        this.timestamp = new Date(input.timestamp);
 
         return this;
     }

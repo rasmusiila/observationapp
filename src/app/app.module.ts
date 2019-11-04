@@ -5,11 +5,11 @@ import {AppComponent} from './app.component';
 import {ObservationsComponent} from './observations/observations.component';
 import {ExcerptPipe} from './pipes/excerpt.pipe';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatSortModule, MatTableModule} from '@angular/material';
 import {ObservationFormComponent} from './observation-form/observation-form.component';
 import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {AppRoutingModule} from './app-routing/app-routing.module';
+import {MDBBootstrapModule} from 'angular-bootstrap-md';
 
 @NgModule({
     declarations: [
@@ -22,14 +22,9 @@ import {AppRoutingModule} from './app-routing/app-routing.module';
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
-        MatTableModule,
-        MatSortModule,
         ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatSelectModule,
         AppRoutingModule,
-        MatButtonModule
+        MDBBootstrapModule.forRoot()
     ],
     providers: [],
     bootstrap: [AppComponent]

@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Rarity} from '../models/rarity';
-import {RARITIES} from '../mocks/mock-rarities';
 import {ObservationService} from '../services/observation.service';
 import {RarityService} from '../services/rarity.service';
 import {Observation} from '../models/observation';
@@ -10,7 +9,7 @@ import {Router} from '@angular/router';
 @Component({
     selector: 'app-observation-form',
     templateUrl: './observation-form.component.html',
-    styleUrls: ['./observation-form.component.css']
+    styleUrls: ['./observation-form.component.scss']
 })
 export class ObservationFormComponent implements OnInit {
 
@@ -31,6 +30,7 @@ export class ObservationFormComponent implements OnInit {
 
     ngOnInit() {
         this.getRarities();
+        console.log(this.rarities);
     }
 
     getRarities(): void {
@@ -39,6 +39,7 @@ export class ObservationFormComponent implements OnInit {
     }
 
     onSubmit() {
+        // TODO: am i supposed to check for validation errors here too?
         this.observationService.addObservation(this.observationForm).subscribe(
             data => {
                 console.log(data);
