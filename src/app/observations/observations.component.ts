@@ -17,7 +17,9 @@ export class ObservationsComponent implements OnInit {
         {name: 'speciesName', title: 'Species name', toggle: false},
         {name: 'rarity', title: 'Rarity', toggle: false},
         {name: 'date', title: 'Date', toggle: false},
-        {name: 'time', title: 'Time', toggle: false}
+        {name: 'time', title: 'Time', toggle: false},
+        {name: 'latitude', title: 'Latitude', toggle: false},
+        {name: 'longitude', title: 'Longitude', toggle: false}
     ];
     sortingElement = '';
 
@@ -58,6 +60,10 @@ export class ObservationsComponent implements OnInit {
                     return compareDates(a.timestamp, b.timestamp, isAsc);
                 case 'time':
                     return compareTimes(a.timestamp, b.timestamp, isAsc);
+                case 'latitude':
+                    return compare(a.latitude, b.latitude, isAsc);
+                case 'longitude':
+                    return compare(a.longitude, b.longitude, isAsc);
                 default:
                     return 0;
             }

@@ -21,7 +21,9 @@ export class ObservationFormComponent implements OnInit {
         ],
         rarity: ['', Validators.required],
         notes: [''],
-        timestamp: ['']
+        timestamp: [''],
+        latitude: [''],
+        longitude: ['']
     });
 
     constructor(private fb: FormBuilder, private rarityService: RarityService, private observationService: ObservationService,
@@ -30,7 +32,6 @@ export class ObservationFormComponent implements OnInit {
 
     ngOnInit() {
         this.getRarities();
-        console.log(this.rarities);
     }
 
     getRarities(): void {
@@ -42,9 +43,10 @@ export class ObservationFormComponent implements OnInit {
         // TODO: am i supposed to check for validation errors here too?
         this.observationService.addObservation(this.observationForm).subscribe(
             data => {
-                console.log(data);
-                this.router.navigate(['/observations']).then(() =>
-                    console.log('made it!')); // TODO: instead of console.log do actual logging
+                console.log(data); // TODO: instead of console.log do actual logging
+                this.router.navigate(['/observations']).then(() => {
+                    console.log('made it!');
+                });
             }
         );
     }

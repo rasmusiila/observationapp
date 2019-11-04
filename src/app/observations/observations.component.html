@@ -1,8 +1,8 @@
-
-    <h2>Observations</h2>
-    <a routerLink="/observation-form" type="button" mdbBtn color="indigo" mdbWavesEffect>
-        <mdb-icon fas icon="plus"></mdb-icon>
-        New observation</a>
+<h2>Observations</h2>
+<a routerLink="/observation-form" type="button" mdbBtn color="indigo" mdbWavesEffect>
+    <mdb-icon fas icon="plus"></mdb-icon>
+    New observation</a>
+<div id="table-container" class="table-responsive">
     <table id="tableSortExample" mdbTable class="z-depth-1">
         <thead>
         <tr>
@@ -23,7 +23,10 @@
             <td>{{observation.rarity.name}}</td>
             <td>{{observation.timestamp | date : "dd.MM.yyyy"}}</td>
             <td>{{observation.timestamp | date : "HH:mm"}}</td>
+            <td>{{observation.latitude | number : '1.5-5'}}</td>
+            <td>{{observation.longitude | number : '1.5-5'}}</td>
             <td>{{observation.notes | excerpt:30}}</td>
         </tr>
         </tbody>
     </table>
+</div>

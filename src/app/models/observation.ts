@@ -7,6 +7,8 @@ export class Observation implements Deserializable{
     rarity: Rarity;
     notes: string;
     timestamp: Date;
+    latitude: number;
+    longitude: number;
 
     deserialize(input: any): this {
         Object.assign(this, input);

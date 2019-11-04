@@ -1,38 +1,44 @@
-<h2>Add a new observation</h2>
+<div class="container">
+    <h2>Add a new observation</h2>
 
-<form [formGroup]="observationForm" (ngSubmit)="onSubmit()" class="text-center">
-    <div class="md-form">
-        <input type="text" id="observationFormSpeciesName" class="form-control" formControlName="speciesName" mdbInput
-               mdbValidate required>
-        <label for="observationFormSpeciesName">Species name</label>
-        <mdb-error *ngIf="speciesName.invalid && (speciesName.dirty || speciesName.touched)">
-            <span *ngIf="speciesName.errors.required">Name is required</span>
-            <span *ngIf="speciesName.errors.minlength">Name must be at least 3 characters long</span>
-        </mdb-error>
-    </div>
-
-    <div class="row">
-        <div class="col-md">
-            <select id="observationFormRarity" class="browser-default custom-select form-control"
-                    formControlName="rarity" mdbValidate required>
-                <option selected="selected" disabled>Choose rarity</option>
-                <option *ngFor="let r of rarities" [ngValue]="r">
-                    {{r.name}}
-                </option>
-            </select>
-            <label for="observationFormRarity">Rarity</label>
-            <mdb-error *ngIf="rarity.invalid && (rarity.dirty || rarity.touched)">
-                <span *ngIf="rarity.errors.required">Rarity is required</span>
+    <form [formGroup]="observationForm" (ngSubmit)="onSubmit()">
+        <div class="md-form md-outline">
+            <mdb-icon fas icon="feather-alt" class="prefix"></mdb-icon>
+            <input type="text" id="observationFormSpeciesName" class="form-control" formControlName="speciesName"
+                   mdbInput
+                   mdbValidate required>
+            <label for="observationFormSpeciesName">Species name</label>
+            <mdb-error *ngIf="speciesName.invalid && (speciesName.dirty || speciesName.touched)">
+                <span *ngIf="speciesName.errors.required">Name is required</span>
+                <span *ngIf="speciesName.errors.minlength">Name must be at least 3 characters long</span>
             </mdb-error>
         </div>
-    </div>
 
-    <div class="md-form">
-        <textarea id="observationFormNotes" class="form-control md-textarea" formControlName="notes" mdbInput></textarea>
-        <label for="observationFormNotes">Notes</label>
-    </div>
+        <div class="row">
+            <label for="observationFormRarity">Rarity</label>
+            <div class="col-md">
+                <select id="observationFormRarity" class="browser-default custom-select"
+                        formControlName="rarity" mdbValidate required>
+                    <option selected="selected" disabled>Choose rarity</option>
+                    <option *ngFor="let r of rarities" [ngValue]="r">
+                        {{r.name}}
+                    </option>
+                </select>
+                <mdb-error *ngIf="rarity.invalid && (rarity.dirty || rarity.touched)">
+                    <span *ngIf="rarity.errors.required">Rarity is required</span>
+                </mdb-error>
+            </div>
+        </div>
 
-    <button type="submit" [disabled]="!observationForm.valid" mdbBtn color="indigo">Submit</button>
+        <div class="md-form md-outline">
+            <mdb-icon fas icon="pencil-alt" class="prefix"></mdb-icon>
+            <textarea id="observationFormNotes" class="form-control md-textarea" formControlName="notes"
+                      mdbInput></textarea>
+            <label for="observationFormNotes">Notes</label>
+        </div>
 
-</form>
-<button type="button" (click)="clearFields()" mdbBtn color="red">Clear all</button>
+        <button type="submit" [disabled]="!observationForm.valid" mdbBtn color="indigo">Submit</button>
+        <button type="button" (click)="clearFields()" mdbBtn color="red">Clear all</button>
+
+    </form>
+</div>

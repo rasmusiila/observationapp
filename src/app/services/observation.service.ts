@@ -3,7 +3,8 @@ import {OBSERVATIONS} from '../mocks/mock-observations';
 import {Observation} from '../models/observation';
 import {Observable, of} from 'rxjs';
 import {FormGroup} from '@angular/forms';
-import {map} from 'rxjs/operators';
+import {catchError, finalize, map} from 'rxjs/operators';
+import {LocationService} from './location.service';
 
 @Injectable({
     providedIn: 'root'
@@ -11,7 +12,7 @@ import {map} from 'rxjs/operators';
 export class ObservationService {
     private observations: Observation[];
 
-    constructor() {
+    constructor(private locationService: LocationService) {
     }
 
     getObservations(): Observable<Observation[]> {
@@ -34,17 +35,55 @@ export class ObservationService {
         return localStorageObservations || [];
     }
 
-    addObservation(form: FormGroup): Observable<Observation> {
+    addObservation(form: FormGroup): Observable<any> {
         const observation: Observation = new Observation().deserialize(form.value);
 
         observation.id = this.genId(); // this is front-end only so an ID is needed
         observation.timestamp = new Date();
-
-        const oldObservations = this.getLocalStorageObservations();
-        oldObservations.push(observation);
-        localStorage.setItem('observationsArray', JSON.stringify(oldObservations));
-
-        return of(observation); // normally this would be the response you receive from backend
+        return this.locationService.getPosition().pipe(
+            catchError(err => {
+                // this first catchError catches the possible error from LocationService
+                switch (err.code) {
+                    case undefined:
+                        console.log(err);
+                        break;
+                    case err.PERMISSION_DENIED:
+                        console.log('User denied the request for Geolocation.');
+                        break;
+                    case err.POSITION_UNAVAILABLE:
+                        console.log('Location information is unavailable.');
+                        break;
+                    case err.TIMEOUT:
+                        console.log('The request to get user location timed out.');
+                        break;
+                    default:
+                        console.log('Unknown error encountered.');
+                    // TODO: do actual logging here not console log
+                }
+                return of({});
+            }),
+            map(
+                // in this part the latitude and longitude are added to the observation
+                coordinates => {
+                    observation.latitude = coordinates.coords.latitude;
+                    observation.longitude = coordinates.coords.longitude;
+                }
+            ),
+            catchError(
+                // this catches the possible error when coordinates were not returned from LocationService
+                () => {
+                    return of({});
+                }
+            ),
+            map(
+                // this saves the observation into LocalStorage (in a real app this should be the place where you do an API request)
+                () => {
+                    const oldObservations = this.getLocalStorageObservations();
+                    oldObservations.push(observation);
+                    localStorage.setItem('observationsArray', JSON.stringify(oldObservations));
+                    return observation;
+                }
+            ));
     }
 
     private genId(): number {
@@ -52,4 +91,8 @@ export class ObservationService {
         // I tried to find an easier way to get an Observable array's length but I couldn't find one
         return this.observations.length + 1;
     }
+}
+
+function printPosition(position) {
+    console.log(position.coords);
 }
