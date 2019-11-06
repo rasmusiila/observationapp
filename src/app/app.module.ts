@@ -10,6 +10,10 @@ import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {AppRoutingModule} from './app-routing/app-routing.module';
 import {MDBBootstrapModule} from 'angular-bootstrap-md';
+import {AngularFireModule} from '@angular/fire';
+import {AngularFireStorageModule} from '@angular/fire/storage';
+import {environment} from '../environments/environment';
+import { FileUploadComponent } from './observation-form/file-upload/file-upload.component';
 
 @NgModule({
     declarations: [
@@ -17,14 +21,17 @@ import {MDBBootstrapModule} from 'angular-bootstrap-md';
         ObservationsComponent,
         ExcerptPipe,
         ObservationFormComponent,
-        PageNotFoundComponent
+        PageNotFoundComponent,
+        FileUploadComponent
     ],
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
         ReactiveFormsModule,
         AppRoutingModule,
-        MDBBootstrapModule.forRoot()
+        MDBBootstrapModule.forRoot(),
+        AngularFireModule.initializeApp(environment.firebase),
+        AngularFireStorageModule
     ],
     providers: [],
     bootstrap: [AppComponent]

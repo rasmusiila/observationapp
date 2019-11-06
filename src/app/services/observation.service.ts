@@ -5,6 +5,7 @@ import {Observable, of} from 'rxjs';
 import {FormGroup} from '@angular/forms';
 import {catchError, finalize, map} from 'rxjs/operators';
 import {LocationService} from './location.service';
+import {AngularFireStorage} from '@angular/fire/storage';
 
 @Injectable({
     providedIn: 'root'
@@ -12,7 +13,7 @@ import {LocationService} from './location.service';
 export class ObservationService {
     private observations: Observation[];
 
-    constructor(private locationService: LocationService) {
+    constructor(private locationService: LocationService, private storage: AngularFireStorage) {
     }
 
     getObservations(): Observable<Observation[]> {
@@ -36,7 +37,9 @@ export class ObservationService {
     }
 
     addObservation(form: FormGroup): Observable<any> {
+        console.log('starting to add');
         const observation: Observation = new Observation().deserialize(form.value);
+        console.log(observation);
 
         observation.id = this.genId(); // this is front-end only so an ID is needed
         observation.timestamp = new Date();

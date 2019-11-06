@@ -6,6 +6,7 @@
     <table id="tableSortExample" mdbTable class="z-depth-1">
         <thead>
         <tr>
+            <th></th>
             <th *ngFor="let head of headElements" (click)="sortData(head)">
                 {{head.title}}
                 <mdb-icon *ngIf="!head.toggle && sortingElement === head.name" fas icon="sort-down"
@@ -19,6 +20,8 @@
         </thead>
         <tbody>
         <tr *ngFor="let observation of sortedData">
+            <td id="thumbnail-column"><img *ngIf="observation.avatarPath?.startsWith('https')" [src]="observation.avatarPath"
+                     class="img-thumbnail" alt=""></td>
             <td>{{observation.speciesName}}</td>
             <td>{{observation.rarity.name}}</td>
             <td>{{observation.timestamp | date : "dd.MM.yyyy"}}</td>
