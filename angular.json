@@ -103,7 +103,8 @@
               "src/assets"
             ],
             "styles": [],
-            "scripts": []
+            "scripts": [],
+            "codeCoverage": true
           }
         },
         "lint": {
