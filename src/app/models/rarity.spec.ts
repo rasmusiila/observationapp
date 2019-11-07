@@ -1,7 +1,7 @@
-import { Rarity } from './rarity';
+import {Rarity} from './rarity';
 
 describe('Rarity', () => {
-  it('should create an instance', () => {
-    expect(new Rarity()).toBeTruthy();
-  });
+    it('should create an instance', () => {
+        expect(new Rarity()).toBeTruthy();
+    });
 });

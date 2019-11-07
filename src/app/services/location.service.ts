@@ -11,8 +11,8 @@ export class LocationService {
 
     getPosition(): Observable<any> {
         return new Observable<any>(observer => {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
+            if (this.geoLocation) {
+                this.geoLocation.getCurrentPosition(
                     (position) => {
                         observer.next(position);
                         observer.complete();
@@ -21,8 +21,12 @@ export class LocationService {
                         observer.error(error);
                     });
             } else {
-                observer.error('Unsupported browser for Geolocation.');
+                observer.error('Unsupported browser for Geolocation');
             }
         });
+    }
+
+    get geoLocation(): Geolocation {
+        return navigator.geolocation;
     }
 }

@@ -5,7 +5,6 @@ import {Observable, of} from 'rxjs';
 import {FormGroup} from '@angular/forms';
 import {catchError, finalize, map} from 'rxjs/operators';
 import {LocationService} from './location.service';
-import {AngularFireStorage} from '@angular/fire/storage';
 
 @Injectable({
     providedIn: 'root'
@@ -13,7 +12,7 @@ import {AngularFireStorage} from '@angular/fire/storage';
 export class ObservationService {
     private observations: Observation[];
 
-    constructor(private locationService: LocationService, private storage: AngularFireStorage) {
+    constructor(private locationService: LocationService) {
     }
 
     getObservations(): Observable<Observation[]> {
@@ -94,8 +93,4 @@ export class ObservationService {
         // I tried to find an easier way to get an Observable array's length but I couldn't find one
         return this.observations.length + 1;
     }
-}
-
-function printPosition(position) {
-    console.log(position.coords);
 }
