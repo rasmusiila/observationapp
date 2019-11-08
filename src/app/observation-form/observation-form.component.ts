@@ -6,6 +6,7 @@ import {RarityService} from '../services/rarity.service';
 import {Router} from '@angular/router';
 import {requiredFileType} from './file-upload/requiredFileType';
 import {FileUploadComponent} from './file-upload/file-upload.component';
+import {LogService} from '../services/log.service';
 
 @Component({
     selector: 'app-observation-form',
@@ -32,7 +33,7 @@ export class ObservationFormComponent implements OnInit {
     @ViewChild(FileUploadComponent, {static: false}) fileUpload: FileUploadComponent;
 
     constructor(private fb: FormBuilder, private rarityService: RarityService, private observationService: ObservationService,
-                private router: Router) {
+                private router: Router, private logService: LogService) {
     }
 
     ngOnInit() {
@@ -47,35 +48,32 @@ export class ObservationFormComponent implements OnInit {
     onSubmit() {
         if (this.observationForm.get('avatarFile').value) {
             const fileName = new Date().getTime().toString();
-            this.fileUpload.startUpload(fileName).then((resp) => {
-                console.log(resp);
+            this.fileUpload.startUpload(fileName).then(() => {
                 this.observationForm.patchValue({
                     avatarPath: fileName
                 });
             }).catch(err => {
                 console.log(err);
+                this.logService.warn(err);
             }).finally(() => {
-                console.log('finally');
-                this.observationService.addObservation(this.observationForm).subscribe(
-                    data => {
-                        console.log(data); // TODO: instead of console.log do actual logging
-                        this.router.navigate(['/observations']).then(() => {
-                            console.log('made it!');
-                        });
-                    }
-                );
+                this.logService.debug('File upload process completed');
+                this.addObservation();
             });
         } else {
-            this.observationService.addObservation(this.observationForm).subscribe(
-                data => {
-                    console.log(data); // TODO: instead of console.log do actual logging
-                    this.router.navigate(['/observations']).then(() => {
-                        console.log('made it!');
-                    });
-                }
-            );
+            this.addObservation();
         }
         // this feels bloated, maybe transfer some to services?
+    }
+
+    private addObservation() {
+        this.observationService.addObservation(this.observationForm).subscribe(
+            data => {
+                this.logService.debug(data);
+                this.router.navigate(['/observations']).then(() => {
+                    this.logService.debug('Observation adding process completed');
+                });
+            }
+        );
     }
 
     clearFields() {

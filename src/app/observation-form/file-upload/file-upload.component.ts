@@ -2,6 +2,7 @@ import {Component, ElementRef, HostListener, Input, OnInit} from '@angular/core'
 import {ControlValueAccessor, FormGroup, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {AngularFireStorage, AngularFireUploadTask} from '@angular/fire/storage';
 import {Observable} from 'rxjs';
+import {LogService} from '../../services/log.service';
 
 @Component({
     selector: 'app-file-upload',
@@ -29,7 +30,8 @@ export class FileUploadComponent implements OnInit, ControlValueAccessor {
     // Download URL
     downloadURL: Observable<string>;
 
-    constructor(private storage: AngularFireStorage, private host: ElementRef<HTMLInputElement>) {
+    constructor(private storage: AngularFireStorage, private host: ElementRef<HTMLInputElement>,
+                private logService: LogService) {
     }
 
     ngOnInit() {
@@ -45,8 +47,6 @@ export class FileUploadComponent implements OnInit, ControlValueAccessor {
         if (!this.file) {
             return;
         }
-        console.log('upload started');
-        console.log(this.fileUpload);
 
         // The storage path
         const path = `images/${name}`;

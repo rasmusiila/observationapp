@@ -21,7 +21,6 @@ describe('RarityService', () => {
     it('should return expected rarities', (done) => {
         const expectedRarities = [{id: 13, name: 'Extraordinary'}, {id: 75, name: 'Out of this world'},
             {id: 9, name: 'Pedestrian'}, {id: 5, name: 'Regular'}, {}];
-        console.log(rarityService.mockRarities);
         spyOnProperty(rarityService, 'mockRarities').and.returnValue(expectedRarities);
 
         rarityService.getRarities().subscribe(rarities => {
@@ -34,14 +33,14 @@ describe('RarityService', () => {
         }, () => fail('expected rarities, not an error'));
     });
 
-    it('should return an error when the rarity container is invalid', () => {
+    it('should return an empty container when the rarity container is invalid', () => {
         const expectedRarities = null;
 
         spyOnProperty(rarityService, 'mockRarities').and.returnValue(expectedRarities);
 
-        rarityService.getRarities().subscribe(() => {
-            fail('expected an error, not a rarity');
-        }, error => expect(error.message).toContain('Failed to get any rarities'));
+        rarityService.getRarities().subscribe((rarities) => {
+            expect(rarities.length).toBe(0);
+        }, () => fail('expected an empty container, not an error'));
     });
 
     it('should return an expected rarity', (done) => {

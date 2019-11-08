@@ -118,8 +118,6 @@ describe('ObservationService', () => {
     });
 
     it('should return an error when the mock observations container has invalid values', () => {
-        const expectedRarities = null;
-
         spyOn(observationService, 'getMockObservations').and.returnValue([null]);
         spyOn(observationService, 'getLocalStorageObservations').and.returnValue([]);
 
@@ -130,8 +128,6 @@ describe('ObservationService', () => {
     });
 
     it('should return an empty observable when the localstorage observations container has invalid values', () => {
-        const expectedRarities = null;
-
         spyOn(observationService, 'getMockObservations').and.returnValue([]);
         spyOn(observationService, 'getLocalStorageObservations').and.returnValue([null]);
 
@@ -181,7 +177,6 @@ describe('ObservationService', () => {
         }));
 
         observationService.addObservation(formGroup).subscribe(observation => {
-            console.log(observation);
             expect(observation.id).toBe(1);
             expect(typeof observation.timestamp).toBe(typeof new Date());
             expect(locationServiceSpy.getPosition.calls.count()).toBe(1);

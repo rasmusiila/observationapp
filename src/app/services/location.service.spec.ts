@@ -34,7 +34,7 @@ describe('LocationService', () => {
     //     };
     //
     //     // spyOn(locationService.geoLocation, 'getCurrentPosition').and.callFake(() => {
-    //     //     console.log('hey');
+    //     //     console.log('fake');
     //     // });
     //     locationService.getPosition().subscribe(
     //         (position) => {
