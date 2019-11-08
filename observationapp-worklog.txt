@@ -1,0 +1,118 @@
+30.10
+	- Chosen technology: Angular
+		- The main reason being the fact that Angular provides the whole MVC while React only provides the "V".
+	- Do a quick Angular tutorial to get started
+	- Initial list of components to add:
+		- observations
+		- observation-form
+	- Entities:
+		- observation
+		- rarity (possibly an enum?)
+			- another option would be to make it into a separate entity with id and name fields
+			- TODO: change it to an entity that would have its own table in the database, i read that it's generally a better idea to have a table unless you're absolutely sure the values will never change - Done
+			
+31.10
+	- Working on the main view
+		- List of observations
+			- Create a mock list to get started - this might also be used later just to have some initial entries ready
+			- Rarity should have an enum
+			- Date and time format - I'd like this to be as clean as possible, maybe need to use Moment.js or maybe Angular has something for that - oh yes, excellent, Angular has the filter functionality
+			- Angular's filter functionality can likely be also used to display an excerpt of the notes - need to create a custom filter for this, I believe it's called a pipe in Angular
+			- Default sort by timestamp 
+				- it seems like Angular Material is something that can help me here, along with adding some other beneficial components i can use
+				- but there's also something like bootstrap I could use, do a little research on both to see which you'd prefer
+				- I choose Angular Material - eventhough less popular, it was made specifically for Angular; also I already tried bootstrap 
+				- I have already tried Datatables which is a Jquery plugin
+				- Default sorting chronologically works
+			- Making a custom sort script for the date and time fields
+				- Current limitation: Cannot sort multiple columns at once
+	- Work on the form view tomorrow
+
+1.11
+	- Observation form view
+		- Navigation
+		- Reactive vs template-driven - chose reactive
+		- adding angular material to the forms
+		- change rarity from enum to an entity (easier to display it in a selectbox)
+		- form validation
+	- Data persistence - so the data that gets submitted from the form - try to save that maybe to localStorage or something
+		- Data retrieval too - do it like you normally would, except instead of making an API request you ask the data from localStorage instead
+		- Use services for this
+		- Ideally I'd use in-memory database for this but I don't believe the data is persisted when the application is closed and reopened
+		
+2.11
+	- Dilemma with rarity - should I use rarityId (number type) field or rarity (Rarity type) in the Observation class
+		- Extra database calls should be avoided, so I think it's better if I use the Rarity type because then I already have the rarity name without having to query for it
+	- Remove the mock containers' type declarations - it should be pure JSON because that's what you would get from a real API
+	- Ok, rarity works and the Json deserializing works too
+	- Now save the new observation to localstorage and retrieve it in the observation list
+		- Localstorage works - meaning the data is now persisted
+	- Do a redirect when data is submitted
+	- Reset fields with the 'Clear all' button
+	- Now that the basic functionality works, make the UI look slightly better - right now it looks ghastly
+
+3.11
+	- Work on the UI - add navbar, footer, apply Angular Material on the elements that you still haven't applied it for
+		- Skip footer for now, taking way too much time when it shouldn't - Update: thankfully angulat-bootstrap-md has an easy way to get it stickied to the bottom
+		- The more I work with Angular Material, the more I'm regretting it - should I maybe try bootstrap instead, specifically Angular Bootstrap with Material Design - angular-bootstrap-md
+		- Having large troubles with trying to install angular-bootstrap-md - solved
+		- Table sorting is problematic - Angular mdb doesn't support custom sorting yet
+			- I could just use Datatables, but that uses Jquery and it's not preferred to use Jquery in an Angular project
+			- I think that I have to remove the regular sorting capability, and add onclick methods to do the sorting with
+			- Alright, removed the table's native sorting capability, and add an onclick function that sorts according to the column that was clicked
+			- Oof - the pretty selectbox is locked behind a paywall
+	- Some slight things that still bother me: Footer covers the last row of the table, the inputs should probably not be 100% width, in mobile view the table does not fit so the table should be sideways scrollable but not the whole page
+	
+4.11
+	- Fix the little UI errors that you marked down yesterday
+		- Fixed - the only thing I'm still not very happy about is the rarity select, it doesn't quite fit nicely - come back to it later if time
+	- Add geolocation
+		- Probably the simplest way to store these is to use the latitude and longitude values as numbers because there's no easy way to deserialize json to a Geolocation or a Coordinates object (they don't even have constructors)
+		- Having slight trouble with Observables - error handling, pipe, map - it's quite exciting though
+		- Geolocation works both ways - when location is received and when location is not received
+	- Next up try attaching a picture
+		- First do research on what are the common ways to store pictures
+		- Unfortunately the file upload components in Angular mdb are premium only so I need to find something else
+		- Firebase Cloud storage might be a good place to store the avatars in
+			- This makes me think that maybe instead of using LocalStorage for storing observations, I should use Firebase instead
+			- Do the avatars first, then think about maybe migrating the whole thing
+		- Looks like AngularFire is Firebase specifically for Angular
+		- Ok managed to follow a tutorial to save an image to firebase storage
+
+5.11
+	- You probably want to create a child component for the uploading part of the form since it has its own logic
+	- Custom validation should be present for the filetype, (let's only allow png and jpg) - TODO: add filesize validation aswell, might also want to consider resizing the images on upload if needed
+	- Should image upload happen before or after the Observation is added?
+	- Now it got me thinking, maybe the upload button should be separate - if the user uploads the picture before submitting - a little preview will be displayed; if not, then the observation will be added without an image
+		- but at the same time you don't want the user to be able to upload 100 pictures before making up their mind
+	- Ok, uploading an image works somewhat decently; Now do the retrieval of images from Firebase storage
+	- Retrieving images works too - added the images for the mock observations
+	- It's now possible to upload an image, which will then be displayed in the observation table in the respective row; if no picture is uploaded then no picture is shown in the row
+		- right now the images stretch as far as possible as long as the table fits on the screen - make them somewhat uniform or smaller
+		- set a width of 10% to the column containing the thumbnails so they wouldn't get out of hand
+	- TODO: definitely come back to the code you created in this section and refactor things
+	
+6.11
+	- Dilemma: migrate observation storing to Firebase database or do testing?
+		- I choose testing - migration to Firebase is somewhat similar to things I've already done in the course of this project; testing might provide me with a greater learning opportunity
+	- Set up CI - chose Travis CI
+	- Start with unittests
+		- Services
+			- Struggle with Geolocation - unsure how to mock a successful Geolocation query; skipped it for now
+	- Encountered a weird issue where tests wouldn't update unless i changed their names?? - oh, apparently if there's an error in ObservationService tests then RarityService tests didn't work? I don't see why though
+
+7.11
+	- Continue with tests
+	- Try to do tests for every Angular schematic type - service, component, model (likely won't have time to do tests for every single file)
+	- Having slight trouble due to Angular mdb. - figure it out
+	- It seems like there are multiple ways of "faking" a service - Spy, Partial, and Stub
+	- Didn't get to thoroughly test everything
+	- Unfortunately I did not have time for e2e tests
+	- Tommorrow is the final day - you should focus on documentation, LOGGING (instead of console.log), and other possible cleanup (definitely check any exception handling you may have missed)
+
+8.11
+	- console.log is no good - see what's commonly used for logging - nothing too fancy just so you could primarily log the caught errors somewhere
+		- made a separate service for it - it still does console.log but now it's all in one place making it easier to substitute with something else in the future
+	- cleanup, check error handling and maybe some refactoring
+	- documentation - improve the setup guide and add a short description of the project
+	
