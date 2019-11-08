@@ -1,10 +1,8 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Observation} from '../models/observation';
 import {compare, compareDates, compareTimes} from './utils/compare';
 import {ObservationService} from '../services/observation.service';
-import {RarityService} from '../services/rarity.service';
 import {AngularFireStorage} from '@angular/fire/storage';
-import {LocationService} from '../services/location.service';
 
 @Component({
     selector: 'app-observations',
@@ -25,23 +23,15 @@ export class ObservationsComponent implements OnInit {
     ];
     sortingElement = '';
 
-    constructor(private observationService: ObservationService, private rarityService: RarityService,
-                private storage: AngularFireStorage) {
-        // this.sortedData = this.observations.slice();
+    constructor(private observationService: ObservationService, private storage: AngularFireStorage) {
     }
 
     ngOnInit() {
-        this.getObservations();
-        this.sortDataChronologically();
-        this.getAvatars(this.observations);
-        console.log(this.observations);
-        // TODO: this might be suspect if the query from server takes time, maybe it should go to the service layer altogether
-        // something needs to be done with this for sure
-    }
-
-    getObservations(): void {
-        this.observationService.getObservations()
-            .subscribe(observations => this.observations = observations);
+        this.observationService.getObservations().subscribe(observations => {
+            this.observations = observations;
+            this.sortDataChronologically();
+            this.getAvatars();
+        });
     }
 
     sortDataChronologically() {
@@ -76,8 +66,8 @@ export class ObservationsComponent implements OnInit {
         });
     }
 
-    getAvatars(observations: Observation[]) {
-        observations.forEach(observation => {
+    getAvatars() {
+        this.observations.forEach(observation => {
             if (observation.avatarPath) {
                 this.storage.ref(`images/${observation.avatarPath}`).getDownloadURL().subscribe(downloadUrl => {
                     observation.avatarPath = downloadUrl;

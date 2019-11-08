@@ -13,7 +13,7 @@ import {MDBBootstrapModule} from 'angular-bootstrap-md';
 import {AngularFireModule} from '@angular/fire';
 import {AngularFireStorageModule} from '@angular/fire/storage';
 import {environment} from '../environments/environment';
-import { FileUploadComponent } from './observation-form/file-upload/file-upload.component';
+import {FileUploadComponent} from './observation-form/file-upload/file-upload.component';
 
 @NgModule({
     declarations: [

@@ -2,7 +2,6 @@ import {Component, ElementRef, HostListener, Input, OnInit} from '@angular/core'
 import {ControlValueAccessor, FormGroup, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {AngularFireStorage, AngularFireUploadTask} from '@angular/fire/storage';
 import {Observable} from 'rxjs';
-import {finalize} from 'rxjs/operators';
 
 @Component({
     selector: 'app-file-upload',

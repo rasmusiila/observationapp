@@ -1,9 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, Validators} from '@angular/forms';
 import {Rarity} from '../models/rarity';
 import {ObservationService} from '../services/observation.service';
 import {RarityService} from '../services/rarity.service';
-import {Observation} from '../models/observation';
 import {Router} from '@angular/router';
 import {requiredFileType} from './file-upload/requiredFileType';
 import {FileUploadComponent} from './file-upload/file-upload.component';
